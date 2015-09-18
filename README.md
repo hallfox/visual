@@ -7,5 +7,7 @@ You will need to edit the makefile so that it can find the opencv headers and li
 
 # Usage
 ./skeleton <input_file>
+
 ESC - exits the program
+
 SPACE - toggles between the modified and unmodified image
