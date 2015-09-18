@@ -31,6 +31,7 @@ int main(int argc, char **argv) {
   namedWindow("Unix Sample Skeleton");
   
   //Replace center third of the image with white
+  //This can be replaced with whatever filtering you need to do.
   size_t offset1 = image->rows/3 * image->step;
   size_t offset2 = image->rows/3*2 * image->step;
   for(size_t i = offset1; i < offset2; i++)
