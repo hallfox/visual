@@ -4,16 +4,51 @@
 
 #include <iostream>
 
+#define PIXEL_RANGE 255
+
 using namespace std;
 using namespace cv;
 
+size_t imSize(Mat *image) {
+    return image->rows * image->step;
+}
+
 void imNegative(Mat *image) {
-    size_t imSize = image->rows * image->step;
-    for (int i = 0; i < imSize; i++) {
-        image->data[i] = 255 - image->data[i];
+    size_t size = imSize(image);
+    for (int i = 0; i < size; i++) {
+        image->data[i] = PIXEL_RANGE - image->data[i];
     }
 }
 
+void imEqualize(Mat *image) {
+    size_t size = imSize(image);
+    int hist[PIXEL_RANGE+1];
+    int cdf[PIXEL_RANGE+1];
+
+    // Zero-out the new arrays
+    for (int i = 0; i <= PIXEL_RANGE; i++) {
+        hist[i] = 0;
+        cdf[i] = 0;
+    }
+    // Computing the histogram
+    for (int i = 0; i < size; i++) {
+        hist[(unsigned int)image->data[i]]++;
+    }
+    // Compute the cdf
+    cdf[0] = hist[0];
+    for (int i = 1; i <= PIXEL_RANGE; i++) {
+        cdf[i] = cdf[i-1] + hist[i];
+    }
+    // Compute the equalizer keys
+    for (int i = 0; i <= PIXEL_RANGE; i++) {
+        cdf[i] = (cdf[i] * PIXEL_RANGE) / size;
+    }
+    // Finally, use the cdf to transform the equalization
+    for (int i = 0; i < size; i++) {
+        image->data[i] = cdf[(unsigned int)image->data[i]];
+    }
+
+}
 int main(int argc, char **argv) {
   if(argc != 2) {
     cout << "USAGE: skeleton <input file path>" << endl;
@@ -37,7 +72,10 @@ int main(int argc, char **argv) {
   //Create the display window
   namedWindow("Unix Sample Skeleton");
   
-  imNegative(&modified_image);
+  imEqualize(&modified_image);
+  //for (int i = 0; i < imSize(image); i++) {
+      //cout << (int)image->data[i] << " ";
+  //}
   
   //Display loop
   bool loop = true;
