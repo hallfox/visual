@@ -1,5 +1,5 @@
-LIB_PATHS=-L/usr/local/Cellar/opencv/2.4.12/lib
-LIBS=-lopencv_highgui -lopencv_core
+LIB_PATHS=-L/usr/local/lib
+LIBS=-lopencv_highgui -lopencv_core -lopencv_imgcodecs
 all: skeleton
 
 skeleton: skeleton.cpp

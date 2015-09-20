@@ -1,13 +1,20 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgcodecs.hpp>
 
 #include <iostream>
 
+using namespace std;
+using namespace cv;
+
+void imNegative(Mat *image) {
+    size_t imSize = image->rows * image->step;
+    for (int i = 0; i < imSize; i++) {
+        image->data[i] = 255 - image->data[i];
+    }
+}
 
 int main(int argc, char **argv) {
-  using namespace std;
-  using namespace cv;
-  
   if(argc != 2) {
     cout << "USAGE: skeleton <input file path>" << endl;
     return -1;
@@ -30,19 +37,15 @@ int main(int argc, char **argv) {
   //Create the display window
   namedWindow("Unix Sample Skeleton");
   
-  //Replace center third of the image with white
-  //This can be replaced with whatever filtering you need to do.
-  size_t offset1 = image->rows/3 * image->step;
-  size_t offset2 = image->rows/3*2 * image->step;
-  for(size_t i = offset1; i < offset2; i++)
-    modified_image.data[i] = 255;
+  imNegative(&modified_image);
   
   //Display loop
   bool loop = true;
   while(loop) {
     imshow("Unix Sample Skeleton", *image);
     
-    switch(cvWaitKey(15)) {
+    char c = cvWaitKey(15);
+    switch(c) {
       case 27:  //Exit display loop if ESC is pressed
         loop = false;
         break;
