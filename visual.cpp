@@ -85,12 +85,10 @@ void imRegionDetect(Mat *image) {
     queue<int> toVisit;
     vector<bool> visited(size, false);
 
-    int b = 0;
     for (int i = 0; i < size; i++) {
         if (!visited[i] && image->data[i] == 255) {
             cout << "New region detected: " << i << endl;
             toVisit.push(i); // New region found
-            b++;
             visited[i] = true;
             shade = (shade + 50) % 255;
         }
@@ -107,7 +105,7 @@ void imRegionDetect(Mat *image) {
                 toVisit.push(right);
                 visited[right] = true;
             }
-            if (!visited[up] && up >= 0 && image->data[left] == 255) {
+            if (!visited[up] && up >= 0 && image->data[up] == 255) {
                 toVisit.push(up);
                 visited[up] = true;
             }
@@ -116,7 +114,6 @@ void imRegionDetect(Mat *image) {
                 visited[down] = true;
             }
         }
-        if (b >= 4) break;
     }
 }
 
@@ -185,4 +182,5 @@ int main(int argc, char **argv) {
     imwrite("neg.tif", negImage);
     imwrite("equal.tif", eqImage);
     imwrite("binary.tif", threshImage);
+    imwrite("region.tif", regionImage);
 }
