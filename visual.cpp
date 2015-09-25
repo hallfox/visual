@@ -87,7 +87,6 @@ void imRegionDetect(Mat *image) {
 
     for (int i = 0; i < size; i++) {
         if (!visited[i] && image->data[i] == 255) {
-            cout << "New region detected: " << i << endl;
             toVisit.push(i); // New region found
             visited[i] = true;
             shade = (shade + 50) % 255;
@@ -126,26 +125,14 @@ int main(int argc, char **argv) {
     //Load two copies of the image. One to leave as the original, and one to be modified.
     //Done for display purposes only
     Mat original_image = imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE);
-    Mat eqImage = original_image.clone(), 
-        negImage = original_image.clone(),
-        threshImage = original_image.clone(),
-        regionImage = original_image.clone();
-
-    //Create a pointer so that we can quickly toggle between which image is being displayed
-    Mat *image = &original_image;
-
+    Mat modified_image = original_image.clone();
+ 
     //Check that the images loaded
-    if(!original_image.data || !eqImage.data || !negImage.data) {
+    if(!original_image.data || !modified_image.data) {
         cout << "ERROR: Could not load image data." << endl;
         return -1;
     }
     
-    // Apply our custom filters
-    imEqualize(&eqImage);
-    imNegative(&negImage);
-    imAutoThresh(&threshImage);
-    imRegionDetect(&regionImage);
-
     //Create the display window
     namedWindow("Assignment 1");
 
@@ -153,7 +140,7 @@ int main(int argc, char **argv) {
     //Display loop
     bool loop = true;
     while(loop) {
-        imshow("Assignment 1", *image);
+        imshow("Assignment 1", modified_image);
 
         char c = cvWaitKey(15);
         switch(c) {
@@ -161,26 +148,27 @@ int main(int argc, char **argv) {
                 loop = false;
                 break;
             case ' ': // Go back to the original image
-                image = &original_image;
+                original_image.copyTo(modified_image);
                 break;
             case '=':
-                image = &eqImage;
+                imEqualize(&modified_image);
                 break;
             case '-':
-                image = &negImage;
+                imNegative(&modified_image);
                 break;
             case 'b':
-                image = &threshImage;
+                imAutoThresh(&modified_image);
                 break;
             case 'r':
-                image = &regionImage;
+                imRegionDetect(&modified_image);
                 break;
+            case 's':
+                imwrite("out.tif", modified_image);
             default:
             break;
         }
     }
-    imwrite("neg.tif", negImage);
-    imwrite("equal.tif", eqImage);
-    imwrite("binary.tif", threshImage);
-    imwrite("region.tif", regionImage);
+
+    // Cleanup
+    destroyAllWindows();
 }
