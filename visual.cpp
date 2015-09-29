@@ -10,7 +10,7 @@
 using namespace std;
 using namespace cv;
 
-size_t imSize(Mat *image) {
+inline size_t imSize(Mat *image) {
     return image->rows * image->step;
 }
 
@@ -60,7 +60,14 @@ void imEqualize(Mat *image) {
 
 }
 
-void imAutoThresh(Mat *image) {
+void imThresh(Mat *image, int thresh) {
+    int size = imSize(image);
+    for (int i = 0; i < size; i++) {
+        image->data[i] = image->data[i] < thresh ? 0 : 255;
+    }
+}
+
+int imAutoThresh(Mat *image) {
     // Find average pixel, use that as threshold
     // Iterate through picture, cutting off insufficient pixels
     int size = imSize(image);
@@ -70,11 +77,8 @@ void imAutoThresh(Mat *image) {
     }
 
     int thresh = tpi / size;
-    cout << "The threshold is: " << thresh << endl;
-
-    for (int i = 0; i < size; i++) {
-        image->data[i] = image->data[i] < thresh ? 0 : 255;
-    }
+    imThresh(image, thresh);
+    return thresh;
 }
 
 void imRegionDetect(Mat *image) {
@@ -132,13 +136,16 @@ int main(int argc, char **argv) {
         cout << "ERROR: Could not load image data." << endl;
         return -1;
     }
+
+    int defSliderVal = 0;
     
     //Create the display window
     namedWindow("Assignment 1");
-
+    createTrackbar("Threshold", "Assignment 1", &defSliderVal, 255);
 
     //Display loop
     bool loop = true;
+    int autoThresh;
     while(loop) {
         imshow("Assignment 1", modified_image);
 
@@ -149,6 +156,7 @@ int main(int argc, char **argv) {
                 break;
             case ' ': // Go back to the original image
                 original_image.copyTo(modified_image);
+                setTrackbarPos("Threshold", "Assignment 1", 0);
                 break;
             case '=':
                 imEqualize(&modified_image);
@@ -157,7 +165,8 @@ int main(int argc, char **argv) {
                 imNegative(&modified_image);
                 break;
             case 'b':
-                imAutoThresh(&modified_image);
+                autoThresh = imAutoThresh(&modified_image);
+                setTrackbarPos("Threshold", "Assignment 1", autoThresh);
                 break;
             case 'r':
                 imRegionDetect(&modified_image);
@@ -165,6 +174,10 @@ int main(int argc, char **argv) {
             case 's':
                 imwrite("out.tif", modified_image);
                 cout << "Saved image as 'out.tif'.\n";
+            case 't':
+                original_image.copyTo(modified_image);
+                imThresh(&modified_image, getTrackbarPos("Threshold", "Assignment 1"));
+                break;
             default:
             break;
         }
