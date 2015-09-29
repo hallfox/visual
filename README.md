@@ -1,14 +1,24 @@
-# CS555-unix-skeleton
-Simple project skeleton for CS555 at Binghamton University.
+# Assignment 1
+This assignment is all about negating, equalizing, and detecting regions on grayscale images.
 
 # Compilation
-You will need to install opencv using your favorite package manager.
-
-You will need to edit the makefile so that it can find the opencv headers and libraries on your system.
+You will need to install opencv 3.0. Then just run make.
 
 # Usage
-./skeleton <input_file>
+./visual <input_image>
 
 ESC - exits the program
 
-SPACE - toggles between the modified and unmodified image
+SPACE - reverts back to the original image
+
+\- - Gets the image negative
+
+= - Equalizes the image
+
+t - Convert the image into a binary image using the threshold specified by the slider
+
+b - Automatically converts the image into a binary image using the average pixel intensity as the cutoff
+
+r - Performs a region detection on the image, assigning sepearate regions different grayscale colors
+
+s - Saves the current displayed image as 'out.tif'
