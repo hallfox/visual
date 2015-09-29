@@ -96,19 +96,19 @@ void imRegionDetect(Mat *image) {
             image->data[pix] = shade;
             int left = pix-1, right = pix+1,
                 up = pix-width, down = pix+width;
-            if (!visited[left] && pix % width != 0 && image->data[left] == 255) {
+            if (pix % width != 0 && !visited[left] && image->data[left] == 255) {
                 toVisit.push(left);
                 visited[left] = true;
             }
-            if (!visited[right] && right % width != 0 && image->data[right] == 255) {
+            if (right % width != 0 && !visited[right] && image->data[right] == 255) {
                 toVisit.push(right);
                 visited[right] = true;
             }
-            if (!visited[up] && up >= 0 && image->data[up] == 255) {
+            if (up >= 0 && !visited[up] && image->data[up] == 255) {
                 toVisit.push(up);
                 visited[up] = true;
             }
-            if (!visited[down] && down < size && image->data[down] == 255) {
+            if (down < size && !visited[down] && image->data[down] == 255) {
                 toVisit.push(down);
                 visited[down] = true;
             }
@@ -164,6 +164,7 @@ int main(int argc, char **argv) {
                 break;
             case 's':
                 imwrite("out.tif", modified_image);
+                cout << "Saved image as 'out.tif'.\n";
             default:
             break;
         }
