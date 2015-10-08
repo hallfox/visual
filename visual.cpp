@@ -10,7 +10,7 @@
 using namespace std;
 using namespace cv;
 
-static char UNSHARP_MASK[] = {0, 1, 0, 1, -4, 1, 0, 1, 0};
+static int UNSHARP_MASK[] = {0, -1, 0, -1, 5, -1, 0, -1, 0};
 
 inline size_t imSize(Mat *image) {
     return image->rows * image->step;
@@ -127,32 +127,36 @@ void imRegionDetect(Mat *image) {
 
 /****** ASSIGNMENT 2 FUNCTIONS ********/
 
-int calcMask(const Mat &image, char *mask, int row, int col) {
+int calcMask(const Mat &image, int *mask, int row, int col) {
     // Gets the value of an applied mask of size 3x3
-    int val = 0;
+    double val = 0;
     for (int m = 0; m < 3; m++) {
         for (int n = 0; n < 3; n++) {
             if (mask[3*m + n] != 0) {
-                val += mask[3*m + n] * image.data[image.rows*(row-1) + (col-1)];
+                int r = row+m - 1,
+                    c = col+n - 1;
+                val += mask[3*m + n] * image.data[image.step*r + c];
             }
         }
     }
-    return val;
+    return (int)(val*0.2);
 }
 
-void applyMask(const Mat &srcImage, Mat &destImage, char *mask) {
+void applyMask(Mat &image, int *mask) {
     // Applies generic 3x3 mask on image
-    for (int i = 1; i < srcImage.rows - 1; i++) {
-        for (int j = 1; j < srcImage.cols - 1; j++) {
-            destImage.data[destImage.rows*i + j] = calcMask(srcImage, mask, i, j);
+    int size = imSize(&image);
+    for (int i = 1; i < image.rows - 1; i++) {
+        for (int j = 1; j < image.cols - 1; j++) {
+            if (image.step*i + j >= size) cout << "Out of bounds." << endl;
+            int maskVal = calcMask(image, mask, i, j); 
+            image.data[image.step*i + j] = maskVal;
         }
     }
 }
 
 void imSharpen(Mat &image) {
     // Sharpens image by applying the unsharpen mask on an image
-    Mat original = image.clone();
-    applyMask(original, image, UNSHARP_MASK);
+    applyMask(image, UNSHARP_MASK);
 }
 
 int main(int argc, char **argv) {
