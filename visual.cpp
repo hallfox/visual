@@ -10,8 +10,6 @@
 using namespace std;
 using namespace cv;
 
-static int UNSHARP_MASK[] = {-1, -1, -1, -1, 9, -1, -1, -1, -1};
-
 inline size_t imSize(Mat *image) {
     return image->rows * image->step;
 }
@@ -127,36 +125,41 @@ void imRegionDetect(Mat *image) {
 
 /****** ASSIGNMENT 2 FUNCTIONS ********/
 
-uchar calcMask(const Mat &image, int *mask, int row, int col) {
-    // Gets the value of an applied mask of size 3x3
-    double val = 0;
-    for (int m = 0; m < 3; m++) {
-        for (int n = 0; n < 3; n++) {
-            int r = row+m - 1,
-                c = col+n - 1;
-            val += mask[3*m + n] * image.data[image.step*r + c] / 9;
-        }
-    }
-    //cout << "Calculated mask: " << val << endl;
-    //cout << "Scaled mask val: " << (val + 8*255) / (17) << endl;
-    return (uchar)(val + 128);
-}
-
-void applyMask(Mat &image, int *mask) {
+void applyMask(Mat &image, int *mask, int maskSize) {
     // Applies generic 3x3 mask on image
     int size = imSize(&image);
-    for (int i = 1; i < image.rows - 1; i++) {
-        for (int j = 1; j < image.cols - 1; j++) {
-            if (image.step*i + j >= size) cout << "Out of bounds." << endl;
-            int maskVal = calcMask(image, mask, i, j); 
-            image.data[image.step*i + j] = maskVal;
+    Mat blur = image.clone();
+    for (int row = 1; row < image.rows - maskSize / 2; row++) {
+        for (int col = 1; col < image.cols - maskSize / 2; col++) {
+            if (image.step*row + col >= size) cout << "Out of bounds." << endl;
+            // Gets the value of an applied mask of size 3x3
+            int val = 0;
+            for (int m = 0; m < maskSize; m++) {
+                for (int n = 0; n < maskSize; n++) {
+                    int r = row+m - 1,
+                        c = col+n - 1;
+                    val += mask[maskSize*m + n] * image.at<uchar>(r, c);
+                }
+            }
+            blur.at<uchar>(row, col) = (val + 255*8) / 16;
         }
     }
+    image = 2*image - blur;
 }
 
 void imSharpen(Mat &image) {
     // Sharpens image by applying the unsharpen mask on an image
-    applyMask(image, UNSHARP_MASK);
+    int unsharp[] = {-1, -1, -1, -1, 8, -1, -1, -1, -1};
+    applyMask(image, unsharp, 3);
+}
+
+void imSobelEdge(Mat &image) {
+    int sobel[] = {-2, -2, 0, -2, 0, 2, 0, 2, 2};
+    applyMask(image, sobel, 3);
+}
+
+void imLOG(Mat &image, int size, double sigma) {
+    return;
 }
 
 int main(int argc, char **argv) {
@@ -167,8 +170,10 @@ int main(int argc, char **argv) {
 
     //Load two copies of the image. One to leave as the original, and one to be modified.
     //Done for display purposes only
-    Mat original_image = imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE);
+    Mat original_image = imread(argv[1], IMREAD_GRAYSCALE);
     Mat modified_image = original_image.clone();
+
+    cout << original_image.type() << endl;
  
     //Check that the images loaded
     if(!original_image.data || !modified_image.data) {
@@ -210,15 +215,19 @@ int main(int argc, char **argv) {
             case 'r':
                 imRegionDetect(&modified_image);
                 break;
-            case 's':
+            case 'S':
                 imwrite("out.tif", modified_image);
                 cout << "Saved image as 'out.tif'.\n";
+                break;
             case 't':
                 original_image.copyTo(modified_image);
                 imThresh(&modified_image, getTrackbarPos("Threshold", "Assignment 1"));
                 break;
             case 'u':
                 imSharpen(modified_image);
+                break;
+            case 's':
+                imSobelEdge(modified_image);
                 break;
             default:
             break;
