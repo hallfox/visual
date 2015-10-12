@@ -10,7 +10,7 @@
 using namespace std;
 using namespace cv;
 
-static int UNSHARP_MASK[] = {0, -1, 0, -1, 5, -1, 0, -1, 0};
+static int UNSHARP_MASK[] = {-1, -1, -1, -1, 9, -1, -1, -1, -1};
 
 inline size_t imSize(Mat *image) {
     return image->rows * image->step;
@@ -127,19 +127,19 @@ void imRegionDetect(Mat *image) {
 
 /****** ASSIGNMENT 2 FUNCTIONS ********/
 
-int calcMask(const Mat &image, int *mask, int row, int col) {
+uchar calcMask(const Mat &image, int *mask, int row, int col) {
     // Gets the value of an applied mask of size 3x3
     double val = 0;
     for (int m = 0; m < 3; m++) {
         for (int n = 0; n < 3; n++) {
-            if (mask[3*m + n] != 0) {
-                int r = row+m - 1,
-                    c = col+n - 1;
-                val += mask[3*m + n] * image.data[image.step*r + c];
-            }
+            int r = row+m - 1,
+                c = col+n - 1;
+            val += mask[3*m + n] * image.data[image.step*r + c] / 9;
         }
     }
-    return (int)(val*0.2);
+    //cout << "Calculated mask: " << val << endl;
+    //cout << "Scaled mask val: " << (val + 8*255) / (17) << endl;
+    return (uchar)(val + 128);
 }
 
 void applyMask(Mat &image, int *mask) {
