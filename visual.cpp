@@ -125,15 +125,15 @@ void imRegionDetect(Mat *image) {
 
 /****** ASSIGNMENT 2 FUNCTIONS ********/
 
-void applyMask(Mat &image, int *mask, int maskSize) {
+Mat applyMask(const Mat &image, int *mask, int maskSize) {
     // Applies generic 3x3 mask on image
-    int size = imSize(&image);
-    Mat blur = image.clone();
-    for (int row = 1; row < image.rows - maskSize / 2; row++) {
-        for (int col = 1; col < image.cols - maskSize / 2; col++) {
-            if (image.step*row + col >= size) cout << "Out of bounds." << endl;
+    Mat blur;
+    image.assignTo(blur, CV_32S);
+    int size = imSize(&blur);
+    for (int row = maskSize / 2; row < image.rows - maskSize / 2; row++) {
+        for (int col = maskSize / 2; col < image.cols - maskSize / 2; col++) {
             // Gets the value of an applied mask of size 3x3
-            int val = 0;
+            short val = 0;
             for (int m = 0; m < maskSize; m++) {
                 for (int n = 0; n < maskSize; n++) {
                     int r = row+m - 1,
@@ -141,25 +141,63 @@ void applyMask(Mat &image, int *mask, int maskSize) {
                     val += mask[maskSize*m + n] * image.at<uchar>(r, c);
                 }
             }
-            blur.at<uchar>(row, col) = (val + 255*8) / 16;
+            blur.at<int>(row, col) = val;
         }
     }
-    image = 2*image - blur;
+    double mn, mx;
+    minMaxLoc(blur, &mn, &mx);
+    cout << "Max: " << mx << endl;
+    cout << "Min: " << mn << endl;
+    cout << "Scale factor: " << 255 / (mx-mn) << endl;
+    blur -= mn;
+    blur.convertTo(blur, CV_8U, 255 / (mx-mn));
+
+    return blur;
 }
 
 void imSharpen(Mat &image) {
     // Sharpens image by applying the unsharpen mask on an image
-    int unsharp[] = {-1, -1, -1, -1, 8, -1, -1, -1, -1};
-    applyMask(image, unsharp, 3);
+    int unsharp[] = {-1, -1, -1, -1, 9, -1, -1, -1, -1};
+    Mat mask = applyMask(image, unsharp, 3);
+    image = 2*image - mask;
 }
 
 void imSobelEdge(Mat &image) {
-    int sobel[] = {-2, -2, 0, -2, 0, 2, 0, 2, 2};
-    applyMask(image, sobel, 3);
+    int sobelX[] = {-1, -2, -1, 0, 0, 0, 1, 2, 1};
+    int sobelY[] = {-1, 0, 1, -2, 0, 2, -1, 0, 1};
+    Mat gx = applyMask(image, sobelX, 3);
+    Mat gy = applyMask(image, sobelY, 3);
+    image = gx / 2 + gy / 2;
 }
 
-void imLOG(Mat &image, int size, double sigma) {
-    return;
+void imLogA(Mat &image) {
+    int logA[] = {
+         0, -1, -1, -1, -1, -1,  0,
+        -1, -2, -2, -1, -2, -2, -1,
+        -1, -2,  0, -1, -0, -2, -1,
+        -1, -1,  1,  5,  1, -1, -1,
+        -1, -2,  0,  1,  0, -2, -1,
+        -1, -2, -2, -1, -2, -2, -1,
+         0, -1, -1, -1, -1, -1,  0
+    };
+    image += applyMask(image, logA, 7);
+}
+
+void imLogB(Mat &image) {
+    int logB[] = {
+        -2, -2, -1,  0,  0,  0,  0,  0, -1, -2, -2,
+        -2, -1,  0,  1,  1,  2,  1,  1,  0, -1, -2,
+        -1,  0,  1,  2,  3,  4,  3,  2,  1,  0, -1,
+         0,  1,  2,  4,  5,  6,  5,  4,  2,  1,  0,
+         0,  1,  3,  5,  7,  7,  7,  5,  3,  1,  0,
+         0,  2,  4,  6,  7,  8,  7,  6,  4,  2,  0,
+         0,  1,  3,  5,  7,  7,  7,  5,  3,  1,  0,
+         0,  1,  2,  4,  5,  6,  5,  4,  2,  1,  0,
+        -1,  0,  1,  2,  3,  4,  3,  2,  1,  0, -1,
+        -2, -1,  0,  1,  1,  2,  1,  1,  0, -1, -2,
+        -2, -2, -1,  0,  0,  0,  0,  0, -1, -2, -2
+    };
+    image = applyMask(image, logB, 11);
 }
 
 int main(int argc, char **argv) {
@@ -173,8 +211,6 @@ int main(int argc, char **argv) {
     Mat original_image = imread(argv[1], IMREAD_GRAYSCALE);
     Mat modified_image = original_image.clone();
 
-    cout << original_image.type() << endl;
- 
     //Check that the images loaded
     if(!original_image.data || !modified_image.data) {
         cout << "ERROR: Could not load image data." << endl;
@@ -228,6 +264,12 @@ int main(int argc, char **argv) {
                 break;
             case 's':
                 imSobelEdge(modified_image);
+                break;
+            case 'l':
+                imLogA(modified_image);
+                break;
+            case 'L':
+                imLogB(modified_image);
                 break;
             default:
             break;
