@@ -38,6 +38,7 @@ int main(int argc, char **argv) {
     int autoThresh;
     Mat chans[3];
     Mat transformed;
+    Mat votes = Mat::zeros(200, 200, CV_8U);
     while(loop) {
         imshow("Assignment 1", modified_image);
 
@@ -75,6 +76,8 @@ int main(int argc, char **argv) {
                 imSharpen(modified_image);
                 break;
             case 's':
+                imToHSI(modified_image);
+                modified_image = hsiToGs(modified_image);
                 imSobelEdge(modified_image);
                 break;
             case 'l':
@@ -108,10 +111,17 @@ int main(int argc, char **argv) {
                 cout << *it << " ";
               }
               break;
-        case 'x':
+            case 'x':
+                original_image.copyTo(modified_image);
+                votes = imLineDetect(modified_image);
+                break;
+        case 'X':
             original_image.copyTo(modified_image);
-            modified_image = imLineDetect(modified_image);
+            votes = imCircDetect(modified_image);
             break;
+            case 9: // Tab
+                modified_image = votes;
+                break;
             default:
             break;
         }

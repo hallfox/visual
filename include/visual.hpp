@@ -33,6 +33,8 @@ float freqComp(int, int, int, int);
 void imToHSI(cv::Mat&);
 cv::Mat imDct(const cv::Mat&, int);
 cv::Mat imIdct(const cv::Mat&);
-cv::Mat imLineDetect(const cv::Mat&);
+cv::Mat imLineDetect(cv::Mat&);
+cv::Mat imCircDetect(cv::Mat&);
+cv::Mat hsiToGs(const cv::Mat&);
 
 #endif

@@ -7,7 +7,8 @@ using namespace std;
 
 Mat applyMask(const Mat &image, int *mask, int maskSize) {
     // Applies generic 3x3 mask on image
-    Mat blur = image.clone();
+    Mat blur;
+    image.assignTo(blur, CV_32S);
     for (int row = maskSize / 2; row < image.rows - maskSize / 2; row++) {
         for (int col = maskSize / 2; col < image.cols - maskSize / 2; col++) {
             // Gets the value of an applied mask of size 3x3
@@ -16,17 +17,19 @@ Mat applyMask(const Mat &image, int *mask, int maskSize) {
                 for (int n = 0; n < maskSize; n++) {
                     int r = row+m - 1,
                         c = col+n - 1;
-                    val += mask[maskSize*m + n] * blur.at<float>(r, c);
+                    val += mask[maskSize*m + n] * image.at<uchar>(r, c);
                 }
             }
-            blur.at<float>(row, col) = val;
+            blur.at<int>(row, col) = val;
         }
     }
     double mn, mx;
     minMaxLoc(blur, &mn, &mx);
     cout << "Max: " << mx << endl;
     cout << "Min: " << mn << endl;
-    cout << "Scale factor: " << 1 / (mx) << endl;
+    cout << "Scale factor: " << 255 / (mx-mn) << endl;
+    blur -= mn;
+    blur.convertTo(blur, CV_8U, 255 / (mx-mn));
 
     return blur;
 }
@@ -43,12 +46,7 @@ void imSobelEdge(Mat &image) {
     int sobelY[] = {-1, 0, 1, -2, 0, 2, -1, 0, 1};
     Mat gx = applyMask(image, sobelX, 3);
     Mat gy = applyMask(image, sobelY, 3);
-    pow(gx, 2, gx);
-    pow(gy, 2, gy);
-    sqrt(gx + gy, image);
-    double min, max;
-    minMaxLoc(image, &min, &max);
-    image = (image - min) / max;
+    absdiff(gx, gy, image);
 }
 
 void imLogA(Mat &image) {

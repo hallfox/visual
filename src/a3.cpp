@@ -1,5 +1,7 @@
 #include "visual.hpp"
 
+#include <opencv2/imgproc.hpp>
+
 #include <cmath>
 
 #define DCT_WINDOW_SIZE 8
@@ -30,6 +32,13 @@ void imToHSI(cv::Mat& image) {
     }
   }
   image = conv;
+}
+
+cv::Mat hsiToGs(const cv::Mat& img) {
+  cv::Mat chans[3];
+  cv::split(img, chans);
+  chans[2].convertTo(chans[2], CV_8U, 255);
+  return chans[2];
 }
 
 /* Assumes HSI image
@@ -152,13 +161,88 @@ cv::Mat imIdct(const cv::Mat& image) {
   return fimage;
 }
 
-cv::Mat imLineDetect(const cv::Mat& image) {
+inline int linRadius(int x, int y, int theta) {
+  return x*cos(M_PI * theta / 180) + y*sin(M_PI * theta / 180);
+}
+
+cv::Mat linHough(const cv::Mat& image) {
+  int d = sqrt(image.cols*image.cols + image.rows*image.rows) + 1;
+  cv::Mat votes = cv::Mat::zeros(90, d, CV_8U);
+
+  for (int i = 0; i < image.rows; i++) {
+    for (int j = 0; j < image.cols; j++) {
+      // Do voting
+      if (image.at<uchar>(i, j) > 10) {
+        // x = j, y = i
+        for (int theta = 0; theta < 90; theta++) {
+          int r = linRadius(j, i, theta);
+          if (r < d) votes.at<uchar>(theta, r)++;
+        }
+      }
+    }
+  }
+  std::cout << votes;
+  return votes;
+}
+
+cv::Mat imLineDetect(cv::Mat& image) {
   cv::Mat im = image.clone();
   cv::Mat chans[3];
   imToHSI(im);
   cv::split(im, chans);
-  cv::Mat gray = chans[2];
+  cv::Mat gray;
+  chans[2].convertTo(gray, CV_8U, 255);
   imSobelEdge(gray);
+  cv::Mat votes = linHough(gray);
+  for (int i = 0; i < 30; i++) {
+    cv::Point maxVotes;
+    cv::minMaxLoc(votes, 0, 0, 0, &maxVotes);
+    int r = maxVotes.x;
+    double t = M_PI * maxVotes.y / 180;
+    int x1 = 0, x2 = image.cols;
+    int y1 = (r - x1*cos(t)) / sin(t), y2 = (r - x2*cos(t)) / sin(t);
+    cv::line(image, cv::Point(x1, y1), cv::Point(x2, y2), CV_RGB(0, 255, 0));
+    votes.at<uchar>(maxVotes) = 0;
+  }
+  return votes;
+}
 
-  return gray;
+cv::Mat circHough(const cv::Mat& image) {
+  // r**2 = (x - x0)**2 + (y - y0)**2
+  int d = sqrt(image.cols*image.cols + image.rows*image.rows) + 1;
+  cv::Mat votes = cv::Mat::zeros(90, d, CV_8U);
+
+  for (int i = 0; i < image.rows; i++) {
+    for (int j = 0; j < image.cols; j++) {
+      // Do voting
+      if (image.at<uchar>(i, j) > 10) {
+        // x = j, y = i
+        for (int theta = 0; theta < 90; theta++) {
+          int r = linRadius(j, i, theta);
+          if (r < d) votes.at<uchar>(theta, r)++;
+        }
+      }
+    }
+  }
+  std::cout << votes;
+  return votes;
+}
+
+cv::Mat imCircDetect(cv::Mat& image) {
+  cv::Mat im = image.clone();
+  imToHSI(im);
+  cv::Mat gray = hsiToGs(im);
+  imSobelEdge(gray);
+  cv::Mat votes = circHough(gray);
+  for (int i = 0; i < 30; i++) {
+    cv::Point maxVotes;
+    cv::minMaxLoc(votes, 0, 0, 0, &maxVotes);
+    int r = maxVotes.x;
+    double t = M_PI * maxVotes.y / 180;
+    int x1 = 0, x2 = image.cols;
+    int y1 = (r - x1*cos(t)) / sin(t), y2 = (r - x2*cos(t)) / sin(t);
+    cv::line(image, cv::Point(x1, y1), cv::Point(x2, y2), CV_RGB(0, 255, 0));
+    votes.at<uchar>(maxVotes) = 0;
+  }
+  return votes;
 }
