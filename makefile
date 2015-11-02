@@ -23,4 +23,7 @@ clean:
 	@echo " Cleaning..."; 
 	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
 
+dist: doc src include makefile README.md
+	@echo " Creating source distribution tar..."; tar czvf visual.tar.gz *
+
 .PHONY: clean
