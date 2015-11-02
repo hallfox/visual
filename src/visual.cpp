@@ -107,18 +107,16 @@ int main(int argc, char **argv) {
               transformed = imIdct(imDct(modified_image, 1));
               split(transformed, chans);
               modified_image = chans[2];
-              for (auto it = modified_image.begin<float>(); it != modified_image.end<float>(); it++) {
-                cout << *it << " ";
-              }
+              cout << modified_image;
               break;
             case 'x':
                 original_image.copyTo(modified_image);
                 votes = imLineDetect(modified_image);
                 break;
-        case 'X':
-            original_image.copyTo(modified_image);
-            votes = imCircDetect(modified_image);
-            break;
+            case 'X':
+                original_image.copyTo(modified_image);
+                votes = imCircDetect(modified_image);
+                break;
             case 9: // Tab
                 modified_image = votes;
                 break;
