@@ -41,3 +41,7 @@ E - Perform forward DCT then backwards again, keeping 1 frequency component
 x - Do an ROI detection for lines
 X - Do an ROI detection for circles; *note: takes ages*
 Tab - If a linear ROI detection was run, show the Hough transform votes
+
+## Updates:
+- Did some housekeeping, since the source files are were getting a bit long
+- Moved the write up to doc/report.pdf
