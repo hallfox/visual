@@ -27,6 +27,7 @@ void imToHSI(cv::Mat& image) {
 
       // Normalize
       hsi[2] /= 255;
+      hsi[0] *= 255./360;
 
       conv.at<cv::Vec3f>(i, j) = hsi;
     }
