@@ -27,7 +27,7 @@ void imToHSI(cv::Mat& image) {
 
       // Normalize
       hsi[2] /= 255;
-      hsi[0] *= 255./360;
+      hsi[0] *= 1./360;
 
       conv.at<cv::Vec3f>(i, j) = hsi;
     }
@@ -147,16 +147,8 @@ cv::Mat imIdct(const cv::Mat& image) {
   cv::Mat fimage;
   cv::Mat chans[3];
   cv::split(im, chans);
-  double min, max;
   for (int i = 0; i < 3; i++) {
     chanIdct(chans[i]);
-    cv::minMaxLoc(chans[i], &min, &max);
-    if (i == 0) {
-      chans[i] = (chans[i] - min) * 359 / max;
-    }
-    else {
-      chans[i] = (chans[i] - min) / max;
-    }
   }
   cv::merge(chans, 3, fimage);
   return fimage;

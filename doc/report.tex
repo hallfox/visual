@@ -131,10 +131,86 @@ Simulate DCT on some data.
 \end{smallmatrix}
 \]
 \includegraphics[scale=0.7]{dct2}\\
+For this example, I think an 8-point DCT would be more useful in compression
+because if we used the 16-point model, when we compress we may lose a lot of
+information about the higher frequencies depending on how much we want to cut off. Say we
+want to compress the image by 50\%. Then we drop the last 8 biggest frequency componenets
+would be harder to reconstruct the second row. So if our image happens to
+fluctuate between low and high intensities at that location, then we lose that
+important information and we get a very blurry picture over a large area.
+However, if we use the 8-point model, then we lose the high frequency component
+information in more local areas, so we get less blurring overall.
 \end{enumerate}
 \end{question}
 
 \subsection{Programming}
+
+The algorithm behind DCT was rather simple, apply a DCT forward transform on an
+image, eliminate some of its high frequency components, and restore the image
+with a DCT back transform. Unfortunately the implementation fell through
+somewhere.
+
+I started with transforming the image from BGR (the way OpenCV loads it) to HSI.
+The results are a bit psychedlic, but unsurprising given OpenCV still thinks
+it's a BGR image.\\
+
+\includegraphics[scale=0.5]{baselhsi}\\
+
+This is with hue, saturation, and intensity scaled to a range of $\lbrack0,
+1\rbrack$. So, I ran it through a forward DCT transform:\\
+
+\includegraphics[scale=0.5]{baseldct3}\\
+
+Again, this image looks odd, but it's actually unsurprising. The image itself is
+fairly meaningless because all we're doing is visualizing the coefficients of
+the lowest 9 frequencies of each HSI channel, placed into what OpenCV thinks is
+a BGR image. But you can clearly see that for each $8\times8$ segment, we're cutting
+out all but the lowest 9 frequencies. I performed a backward DCT
+transform on this image:\\
+
+\includegraphics[scale=0.5]{baselidct3}\\
+
+And now something looks fairly suspicious. Clearly, this is not our original
+image. With the excessive amounts of purple, it also appears the hue channel has
+exploded past its bound.
+
+To try to get a better idea of what went wrong I cut out the hue and saturation channels and
+inspected only the intensity channel, which basically turns it into a grayscale
+image. Here's the 9-frequency forward transform:\\
+
+\includegraphics[scale=0.5]{baseldctg3}\\
+
+And the corresponding inverse DCT:\\
+
+\includegraphics[scale=0.5]{baselidctg3}\\
+
+Now we can see that it's not completely off, but the image looks like someone is
+holding a wire film over it. I could not find an explanation for why this might
+be.
+
+Regardless, I ran it through DCT and IDCT again, this time only retaining the DC
+frequency component:
+
+\includegraphics[scale=0.5]{baseldctg1}\\
+
+Again, we can clearly see only one component in each $8\times8$ window is being kept,
+and they don't have very much meaning when displayed as an image.\\
+
+\includegraphics[scale=0.5]{baselidctg1}\\
+
+We still get a wirey effect, but oddly enough the image seems very blurry in the
+background. Out of curiosity I brightened the image by a factor of 5 to get a
+bettter image. The result was interesting:\\
+
+\includegraphics[scale=0.5]{baselidctg1_bright}\\
+
+Oddly enough this image looks fairly honest to the original, despite it's
+obvious low quality. Of course, I expected a lower quality than the first round
+of DCT since we took out most of the frequency components. I believe this is
+what the intended difference was supposed to show; R2 is supposed to be of
+higher quality than R1 since it retains more of the original information.
+However, I clearly am losing I'm not supposed to when I apply DCT, so it's
+harder to see.
 
 \section{ROI Segmentation}
 
@@ -192,21 +268,22 @@ $1/2$ the image width.
 
 Some speedup could probably be achieved by increasing the
 lower bound for radii (after all, we're trying to detect big significant
-circles) and possibly by changing increasing the step change of the radius. For
-larger radii, we also don't need to start looking for centers at the very edges
-of the image, but instead gradually start closer to the center for larger radii.
-This is because circular regions in the image with a large radius need to be
-contained in the image, so their centers must be closer toward the center of the
-image.That would significantly reduce the memory used and benefit the time as well (it
-takes approximately 90--120 seconds to produce an output). Threading may also be
-an option for further increases in speed.
+circles) and possibly by changing increasing the step change of the radius. Also
+for larger radii, we can gradually ignore checking the center of the
+of the image. This is because the edge of a circle with a raidus larger than either half
+the width or height couldn't possibly be located in the center, otherwise they'd reach
+outside the border of the image. Thus, the edges of the circle must be somewhere
+closer to the edges of the image. That would significantly reduce the memory
+used and benefit the time as well (it takes approximately 90--120 seconds to
+produce an output). Threading may also be an option for further increases in speed.
 
 \section{References}
 
 \begin{enumerate}
-\item OpenCV 3.0 Documentation: http://docs.opencv.org/3.0.0/\\
-\item Hough Transforms: https://www.youtube.com/watch?v=kMK8DjdGtZo\\
-\item DCT: https://www.youtube.com/watch?v={\_}bltj{\_}7Ne2c
+\item OpenCV 3.0 Documentation --- http://docs.opencv.org/3.0.0/
+\item Hough Transforms --- https://www.youtube.com/watch?v=kMK8DjdGtZo
+\item DCT --- https://www.youtube.com/watch?v={\_}bltj{\_}7Ne2c
+\item Midpoint Circle Algorithm --- https://en.wikipedia.org/wiki/Midpoint{\_}circle{\_}algorithm
 \end{enumerate}
 
 \end{document}

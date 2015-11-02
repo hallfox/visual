@@ -88,27 +88,37 @@ int main(int argc, char **argv) {
                 break;
             case 'h':
                 imToHSI(modified_image);
-                split(modified_image, chans);
-                modified_image = chans[2];
+                // split(modified_image, chans);
+                // modified_image = chans[2];
                 break;
             case 'd':
                 original_image.copyTo(modified_image);
                 imToHSI(modified_image);
-                transformed = imDct(modified_image, 8);
-                split(transformed, chans);
+                modified_image = imDct(modified_image, 3);
+                split(modified_image, chans);
                 modified_image = chans[2];
-                // for (auto it = modified_image.begin<float>(); it != modified_image.end<float>(); it++) {
-                //   cout << *it << " ";
-                // }
                 break;
             case 'D':
-              original_image.copyTo(modified_image);
-              imToHSI(modified_image);
-              transformed = imIdct(imDct(modified_image, 1));
-              split(transformed, chans);
-              modified_image = chans[2];
-              cout << modified_image;
-              break;
+                original_image.copyTo(modified_image);
+                imToHSI(modified_image);
+                modified_image = imIdct(imDct(modified_image, 3));
+                split(modified_image, chans);
+                modified_image = chans[2];
+                break;
+            case 'e':
+                original_image.copyTo(modified_image);
+                imToHSI(modified_image);
+                modified_image = imDct(modified_image, 1);
+                split(modified_image, chans);
+                modified_image = chans[2];
+                break;
+            case 'E':
+                original_image.copyTo(modified_image);
+                imToHSI(modified_image);
+                modified_image = imIdct(imDct(modified_image, 1));
+                split(modified_image, chans);
+                modified_image = chans[2];
+                break;
             case 'x':
                 original_image.copyTo(modified_image);
                 votes = imLineDetect(modified_image);
