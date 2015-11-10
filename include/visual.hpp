@@ -37,4 +37,10 @@ cv::Mat imLineDetect(cv::Mat&);
 cv::Mat imCircDetect(cv::Mat&);
 cv::Mat hsiToGs(const cv::Mat&);
 
+/****** ASSIGNMENT 3 FUNCTIONS ********/
+
+int imOtsuBinary(cv::Mat&);
+void imDilate(cv::Mat&);
+void imErode(cv::Mat&);
+
 #endif

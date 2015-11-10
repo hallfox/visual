@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
 
     //Load two copies of the image. One to leave as the original, and one to be modified.
     //Done for display purposes only
-    Mat original_image = imread(argv[1]);
+    Mat original_image = imread(argv[1], IMREAD_GRAYSCALE);
     Mat modified_image = original_image.clone();
 
     //Check that the images loaded
@@ -30,8 +30,8 @@ int main(int argc, char **argv) {
     int defSliderVal = 0;
 
     //Create the display window
-    namedWindow("Assignment 1");
-    createTrackbar("Threshold", "Assignment 1", &defSliderVal, 255);
+    namedWindow("Visual");
+    createTrackbar("Threshold", "Visual", &defSliderVal, 255);
 
     //Display loop
     bool loop = true;
@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
     Mat transformed;
     Mat votes = Mat::zeros(200, 200, CV_8U);
     while(loop) {
-        imshow("Assignment 1", modified_image);
+        imshow("Visual", modified_image);
 
         char c = cvWaitKey(15);
         switch(c) {
@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
                 break;
             case ' ': // Go back to the original image
                 original_image.copyTo(modified_image);
-                setTrackbarPos("Threshold", "Assignment 1", 0);
+                setTrackbarPos("Threshold", "Visual", 0);
                 break;
             case '=':
                 imEqualize(&modified_image);
@@ -58,8 +58,8 @@ int main(int argc, char **argv) {
                 imNegative(&modified_image);
                 break;
             case 'b':
-                autoThresh = imAutoThresh(&modified_image);
-                setTrackbarPos("Threshold", "Assignment 1", autoThresh);
+                autoThresh = imOtsuBinary(modified_image);
+                setTrackbarPos("Threshold", "Visual", autoThresh);
                 break;
             case 'r':
                 imRegionDetect(&modified_image);
@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
                 break;
             case 't':
                 original_image.copyTo(modified_image);
-                imThresh(&modified_image, getTrackbarPos("Threshold", "Assignment 1"));
+                imThresh(&modified_image, getTrackbarPos("Threshold", "Visual"));
                 break;
             case 'u':
                 imSharpen(modified_image);

@@ -1,4 +1,4 @@
 visual
 build/
-*.tar.gz
+*.tar:.gz
 *.zip
