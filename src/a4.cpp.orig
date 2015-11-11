@@ -43,6 +43,9 @@ int imOtsuBinary(cv::Mat& img) {
   return cutoff;
 }
 
+<<<<<<< HEAD
+void imDilate(cv::Mat& img) {
+=======
 void imGray(cv::Mat& img) {
   // Converts BGR image to grayscale using luminance
   cv::Mat gs(img.size(), CV_8U);
@@ -57,6 +60,7 @@ void imGray(cv::Mat& img) {
 
 void imDilate(cv::Mat& img) {
 
+>>>>>>> a3
 }
 
 void imErode(cv::Mat& img) {
