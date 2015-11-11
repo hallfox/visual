@@ -39,9 +39,11 @@ cv::Mat hsiToGs(const cv::Mat&);
 
 /****** ASSIGNMENT 4 FUNCTIONS ********/
 
-void imOtsuBinary(cv::Mat&);
+int imOtsuBinary(cv::Mat&);
 void imGray(cv::Mat&);
 void imDilate(cv::Mat&);
 void imErode(cv::Mat&);
+void imOpen(cv::Mat&);
+void imClose(cv::Mat&);
 
 #endif
