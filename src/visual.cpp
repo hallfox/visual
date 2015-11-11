@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
 
     //Load two copies of the image. One to leave as the original, and one to be modified.
     //Done for display purposes only
-    Mat original_image = imread(argv[1], IMREAD_GRAYSCALE);
+    Mat original_image = imread(argv[1]);//, IMREAD_GRAYSCALE);
     Mat modified_image = original_image.clone();
 
     //Check that the images loaded

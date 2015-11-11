@@ -136,7 +136,9 @@ cv::Mat imDct(const cv::Mat& image, int thresh) {
   cv::Mat chans[3];
   cv::split(im, chans);
   for (int i = 0; i < 3; i++) {
+    chans[i] -= 0.5;
     chanDct(chans[i], thresh);
+    chans[i] += 0.5;
   }
   cv::merge(chans, 3, fimage);
   return fimage;
