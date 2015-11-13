@@ -84,73 +84,64 @@ void imGray(cv::Mat& img) {
 
 // Morphological operations, using a 3x3 square because it's easy
 
-void dilateRegion(cv::Mat& img, int i, int j) {
+uchar dilateRegion(const cv::Mat& img, int i, int j) {
   auto region = REGION_PLUS;
+  uchar max = 0;
   for (auto it = region.begin(); it != region.end(); it++) {
     int checkRow = i + it->y,
       checkCol = j + it->x;
     if (checkRow < img.rows && checkRow >= 0 && checkCol < img.cols && checkCol >= 0
-        && img.at<uchar>(checkRow, checkCol) == BLACK) {
-      img.at<uchar>(checkRow, checkCol) = GRAY;
+        && img.at<uchar>(checkRow, checkCol) > max) {
+      max = img.at<uchar>(checkRow, checkCol);
     }
   }
+  return max;
 }
 
-void imDilate(cv::Mat& img) {
+cv::Mat imDilate(const cv::Mat& img) {
+  cv::Mat dilation(img.size(), CV_8U);
   // Expects GS binary image
   for (int i = 0; i < img.rows; i++) {
     for (int j = 0; j < img.cols; j++) {
       // Dilation: if the pixel is white, mark all black pixels around it as GRAY,
       // and at the end shift the GRAY pixels to WHITE
-      if (img.at<uchar>(i, j) == WHITE) {
-        dilateRegion(img, i, j);
-      }
+      dilation.at<uchar>(i, j) = dilateRegion(img, i, j);
     }
   }
-  for (auto it = img.begin<uchar>(); it != img.end<uchar>(); it++) {
-    if (*it == GRAY) {
-      *it = WHITE;
-    }
-  }
+  return dilation;
 }
 
-void erodeRegion(cv::Mat& img, int i, int j) {
+uchar erodeRegion(const cv::Mat& img, int i, int j) {
   // Plus symbol
   auto region = REGION_PLUS;
+  uchar min = 255;
   for (auto it = region.begin(); it != region.end(); it++) {
     int checkRow = i + it->y,
       checkCol = j + it->x;
     if (checkRow < img.rows && checkRow >= 0 && checkCol < img.cols && checkCol >= 0
-        && img.at<uchar>(checkRow, checkCol) == BLACK) {
-      img.at<uchar>(i, j) = GRAY;
-      return;
+        && img.at<uchar>(checkRow, checkCol) < min) {
+      min = img.at<uchar>(checkRow, checkCol);
     }
   }
+  return min;
 }
 
-void imErode(cv::Mat& img) {
+cv::Mat imErode(const cv::Mat& img) {
+  cv::Mat erosion(img.size(), CV_8U);
   for (int i = 0; i < img.rows; i++) {
     for (int j = 0; j < img.cols; j++) {
       // Erosion: if the pixel is WHITE, search in the area of the shape. If a single BLACK pixel is detected,
       // make the center GRAY. At the end, sweep through and make the GRAY pixels BLACK
-      if (img.at<uchar>(i, j) == WHITE) {
-        erodeRegion(img, i, j);
-      }
+      erosion.at<uchar>(i, j) = erodeRegion(img, i, j);
     }
   }
-  for (auto it = img.begin<uchar>(); it != img.end<uchar>(); it++) {
-    if (*it == GRAY) {
-      *it = BLACK;
-    }
-  }
+  return erosion;
 }
 
-void imOpen(cv::Mat& img) {
-  imErode(img);
-  imDilate(img);
+cv::Mat imOpen(const cv::Mat& img) {
+  return imDilate(imErode(img));
 }
 
-void imClose(cv::Mat& img) {
-  imDilate(img);
-  imErode(img);
+cv::Mat imClose(const cv::Mat& img) {
+  return imErode(imDilate(img));
 }

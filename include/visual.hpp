@@ -41,9 +41,9 @@ cv::Mat hsiToGs(const cv::Mat&);
 
 int imOtsuBinary(cv::Mat&);
 void imGray(cv::Mat&);
-void imDilate(cv::Mat&);
-void imErode(cv::Mat&);
-void imOpen(cv::Mat&);
-void imClose(cv::Mat&);
+cv::Mat imDilate(const cv::Mat&);
+cv::Mat imErode(const cv::Mat&);
+cv::Mat imOpen(const cv::Mat&);
+cv::Mat imClose(const cv::Mat&);
 
 #endif

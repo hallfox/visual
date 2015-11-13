@@ -131,10 +131,10 @@ int main(int argc, char **argv) {
         imGray(modified_image);
         break;
       case 'm':
-        imDilate(modified_image);
+        modified_image = imDilate(modified_image);
         break;
       case 'M':
-        imErode(modified_image);
+        modified_image = imErode(modified_image);
         break;
       case 9: // Tab
         modified_image = votes;

@@ -92,6 +92,7 @@ float idct(const cv::Mat& im, int i, int j, int x, int y) {
 }
 
 void chanDct(cv::Mat& chan, int thresh) {
+  cv::Mat dctMat(chan.size(), CV_32F);
   for (int i = 0; i <= chan.rows - DCT_WINDOW_SIZE; i += DCT_WINDOW_SIZE) {
     for (int j = 0; j <= chan.cols - DCT_WINDOW_SIZE; j += DCT_WINDOW_SIZE) {
       // Find an 8x8 segment
@@ -102,18 +103,20 @@ void chanDct(cv::Mat& chan, int thresh) {
       for (int u = 0; u < DCT_WINDOW_SIZE; u++) {
         for (int v = 0; v < DCT_WINDOW_SIZE; v++) {
           if (u < thresh && v < thresh) {
-            chan.at<float>(i+v, j+u) = dct(chan, i, j, u, v);
+            dctMat.at<float>(i+v, j+u) = dct(chan, i, j, u, v);
           }
           else {
-            chan.at<float>(i+v, j+u) = 0;
+            dctMat.at<float>(i+v, j+u) = 0;
           }
         }
       }
     }
   }
+  chan = dctMat;
 }
 
 void chanIdct(cv::Mat& chan) {
+  cv::Mat idctMat(chan.size(), CV_32F);
   for (int i = 0; i <= chan.rows - DCT_WINDOW_SIZE; i+=DCT_WINDOW_SIZE) {
     for (int j = 0; j <= chan.cols - DCT_WINDOW_SIZE; j+=DCT_WINDOW_SIZE) {
       // Find an 8x8 segment
@@ -123,11 +126,12 @@ void chanIdct(cv::Mat& chan) {
       // Repeat
       for (int x = 0; x < DCT_WINDOW_SIZE; x++) {
         for (int y = 0; y < DCT_WINDOW_SIZE; y++) {
-          chan.at<float>(i+y, j+x) = idct(chan, i, j, x, y);
+          idctMat.at<float>(i+y, j+x) = idct(chan, i, j, x, y);
         }
       }
     }
   }
+  chan = idctMat;
 }
 
 cv::Mat imDct(const cv::Mat& image, int thresh) {
@@ -136,9 +140,7 @@ cv::Mat imDct(const cv::Mat& image, int thresh) {
   cv::Mat chans[3];
   cv::split(im, chans);
   for (int i = 0; i < 3; i++) {
-    chans[i] -= 0.5;
     chanDct(chans[i], thresh);
-    chans[i] += 0.5;
   }
   cv::merge(chans, 3, fimage);
   return fimage;
