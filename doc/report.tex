@@ -169,47 +169,34 @@ transform on this image:\\
 
 \includegraphics[scale=0.5]{baselidct3}\\
 
-And now something looks fairly suspicious. Clearly, this is not our original
-image. With the excessive amounts of purple, it also appears the hue channel has
-exploded past its bound.
+And now something looks fairly suspicious. Clearly, there are some unexpected
+green spots sprinkled across the image. To try to get a better idea of what went
+wrong I inspected the hue, saturation, and intensity channels separately.
+Saturation and intensity looked okay, but the hue channel seem to have some dark
+spots, approximately where the suspicious green squares are. I can only infer
+this means when the higher frequencies are ditched, critical hue values are
+lost, resulting in lost color information. I also ran this through the
+1-frequency transform:\\
 
-To try to get a better idea of what went wrong I cut out the hue and saturation channels and
-inspected only the intensity channel, which basically turns it into a grayscale
-image. Here's the 9-frequency forward transform:\\
-
-\includegraphics[scale=0.5]{baselidct3gs}\\
+\includegraphics[scale=0.5]{baseldct1}\\
 
 And the corresponding inverse DCT:\\
 
+\includegraphics[scale=0.5]{baselidct1}\\
+
+The same effects can still be seen. I provided the intensity channel output
+only, as it had a better effect:\\
+
+\includegraphics[scale=0.5]{baselidct3gs}\\
+
+And for the DC component transform:\\
+
 \includegraphics[scale=0.5]{baselidct1gs}\\
-
-Now we can see that it's not completely off, but the image looks like someone is
-holding a wire film over it. I could not find an explanation for why this might
-be.
-
-Regardless, I ran it through DCT and IDCT again, this time only retaining the DC
-frequency component:
-
-\includegraphics[scale=0.5]{baseldctg1}\\
-
-Again, we can clearly see only one component in each $8\times8$ window is being kept,
-and they don't have very much meaning when displayed as an image.\\
-
-\includegraphics[scale=0.5]{baselidctg1}\\
-
-We still get a wirey effect, but oddly enough the image seems very blurry in the
-background. Out of curiosity I brightened the image by a factor of 5 to get a
-bettter image. The result was interesting:\\
-
-\includegraphics[scale=0.5]{baselidctg1_bright}\\
 
 Oddly enough this image looks fairly honest to the original, despite it's
 obvious low quality. Of course, I expected a lower quality than the first round
-of DCT since we took out most of the frequency components. I believe this is
-what the intended difference was supposed to show; R2 is supposed to be of
+of DCT since we took out most of the frequency components. R2 is clearly of
 higher quality than R1 since it retains more of the original information.
-However, I clearly am losing I'm not supposed to when I apply DCT, so it's
-harder to see.
 
 \section{ROI Segmentation}
 
