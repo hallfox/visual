@@ -147,8 +147,7 @@ information in more local areas, so we get less blurring overall.
 
 The algorithm behind DCT was rather simple, apply a DCT forward transform on an
 image, eliminate some of its high frequency components, and restore the image
-with a DCT back transform. Unfortunately the implementation fell through
-somewhere.
+with a DCT back transform.
 
 I started with transforming the image from BGR (the way OpenCV loads it) to HSI.
 The results are a bit psychedlic, but unsurprising given OpenCV still thinks
@@ -178,11 +177,11 @@ To try to get a better idea of what went wrong I cut out the hue and saturation 
 inspected only the intensity channel, which basically turns it into a grayscale
 image. Here's the 9-frequency forward transform:\\
 
-\includegraphics[scale=0.5]{baseldctg3}\\
+\includegraphics[scale=0.5]{baselidct3gs}\\
 
 And the corresponding inverse DCT:\\
 
-\includegraphics[scale=0.5]{baselidctg3}\\
+\includegraphics[scale=0.5]{baselidct1gs}\\
 
 Now we can see that it's not completely off, but the image looks like someone is
 holding a wire film over it. I could not find an explanation for why this might

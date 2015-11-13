@@ -26,10 +26,45 @@ void imToHSI(cv::Mat& image) {
       hsi[1] = 1 - rgbMin / hsi[2];
 
       // Normalize
-      hsi[2] /= 255;
+      hsi[2] /= 256;
       hsi[0] *= 1./360;
 
       conv.at<cv::Vec3f>(i, j) = hsi;
+    }
+  }
+  image = conv;
+}
+
+void imFromHSI(cv::Mat& image) {
+  cv::Mat conv(image.size(), CV_8UC3);
+  for (int i = 0; i < image.rows; i++) {
+    for (int j = 0; j < image.cols; j++) {
+      cv::Vec3f hsi = image.at<cv::Vec3f>(i, j);
+      cv::Vec3b bgr;
+
+      float hue = hsi[0] * 360;
+      float red, green, blue;
+      if (hue >= 0 && hue < 120) {
+        blue = hsi[2] * (1 - hsi[1]);
+        red = hsi[2] * (1 + (hsi[1]*cos((M_PI/180)*hue) / cos((M_PI/180)*(60 - hue))));
+        green = 3*hsi[2] - (red + blue);
+      }
+      else if (hue >= 120 && hue < 240) {
+        hue -= 120;
+        red = hsi[2] * (1 - hsi[1]);
+        green = hsi[2] * (1 + (hsi[1]*cos((M_PI/180)*hue) / cos((M_PI/180)*(60 - hue))));
+        blue = 3*hsi[2] - (red + green);
+      }
+      else {
+        hue -= 240;
+        green = hsi[2] * (1 - hsi[1]);
+        blue = hsi[2] * (1 + (hsi[1]*cos((M_PI/180)*hue) / cos((M_PI/180)*(60 - hue))));
+        red = 3*hsi[2] - (blue + green);
+      }
+
+      bgr = {static_cast<uchar>(blue * 256), static_cast<uchar>(green * 256), static_cast<uchar>(red * 256)};
+
+      conv.at<cv::Vec3b>(i, j) = bgr;
     }
   }
   image = conv;

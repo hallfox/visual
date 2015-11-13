@@ -91,12 +91,15 @@ int main(int argc, char **argv) {
         // split(modified_image, chans);
         // modified_image = chans[2];
         break;
+      case 'H':
+        imFromHSI(modified_image);
+        break;
       case 'd':
         original_image.copyTo(modified_image);
         imToHSI(modified_image);
         modified_image = imDct(modified_image, 3);
         split(modified_image, chans);
-        modified_image = chans[2];
+        modified_image = chans[0];
         break;
       case 'D':
         original_image.copyTo(modified_image);
@@ -109,8 +112,7 @@ int main(int argc, char **argv) {
         original_image.copyTo(modified_image);
         imToHSI(modified_image);
         modified_image = imDct(modified_image, 1);
-        split(modified_image, chans);
-        modified_image = chans[2];
+        imFromHSI(modified_image);
         break;
       case 'E':
         original_image.copyTo(modified_image);

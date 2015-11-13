@@ -31,6 +31,7 @@ void imLogB(cv::Mat&);
 float nalpha(int);
 float freqComp(int, int, int, int);
 void imToHSI(cv::Mat&);
+void imFromHSI(cv::Mat&);
 cv::Mat imDct(const cv::Mat&, int);
 cv::Mat imIdct(const cv::Mat&);
 cv::Mat imLineDetect(cv::Mat&);
