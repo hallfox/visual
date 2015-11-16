@@ -7,26 +7,27 @@
 #define BLACK 0
 #define REGION_BOUND 2
 
-static const std::vector<cv::Point2i> REGION_PLUS = {
-  cv::Point2i( 0,  1),
-  cv::Point2i( 1,  0),
-  cv::Point2i( 0, -1),
-  cv::Point2i(-1,  0),
-  cv::Point2i( 0,  0),
-};
+std::vector<cv::Point2i> makeCross(int size) {
+  std::vector<cv::Point2i> cross;
+  cross.push_back(cv::Point2i(0, 0));
+  for (int i = 1; i <= size; i++) {
+    cross.push_back(cv::Point2i(0, i));
+    cross.push_back(cv::Point2i(0, -i));
+    cross.push_back(cv::Point2i(i, 0));
+    cross.push_back(cv::Point2i(-i, 0));
+  }
+  return cross;
+}
 
-static const std::vector<cv::Point2i> REGION_SQUARE = {
-  cv::Point2i( 0,  1),
-  cv::Point2i( 1,  0),
-  cv::Point2i( 0, -1),
-  cv::Point2i(-1,  0),
-  cv::Point2i( 0,  0),
-  cv::Point2i(-1, -1),
-  cv::Point2i( 1,  1),
-  cv::Point2i( 1, -1),
-  cv::Point2i(-1,  1),
-
-};
+std::vector<cv::Point2i> makeSquare(int size) {
+  std::vector<cv::Point2i> square;
+  for (int x = -size; x <= size; x++) {
+    for (int y = -size; y <= size; y++) {
+      square.push_back(cv::Point2i(x, y));
+    }
+  }
+  return square;
+}
 
 // Assumes grayscale image
 int imOtsuBinary(cv::Mat& img) {
@@ -64,7 +65,7 @@ int imOtsuBinary(cv::Mat& img) {
 
   int cutoff = (thresh1 + thresh2) / 2.0;
   for (auto it = img.begin<uchar>(); it != img.end<uchar>(); it++) {
-    *it = *it < cutoff ? 0 : 255;
+    *it = *it < cutoff ? BLACK : WHITE;
   }
   return cutoff;
 }
@@ -84,8 +85,7 @@ void imGray(cv::Mat& img) {
 
 // Morphological operations, using a 3x3 square because it's easy
 
-uchar dilateRegion(const cv::Mat& img, int i, int j) {
-  auto region = REGION_PLUS;
+uchar dilateRegion(const cv::Mat& img, int i, int j, const std::vector<cv::Point2i>& region) {
   uchar max = 0;
   for (auto it = region.begin(); it != region.end(); it++) {
     int checkRow = i + it->y,
@@ -98,22 +98,21 @@ uchar dilateRegion(const cv::Mat& img, int i, int j) {
   return max;
 }
 
-cv::Mat imDilate(const cv::Mat& img) {
+cv::Mat imDilate(const cv::Mat& img, const std::vector<cv::Point2i>& shape) {
   cv::Mat dilation(img.size(), CV_8U);
   // Expects GS binary image
   for (int i = 0; i < img.rows; i++) {
     for (int j = 0; j < img.cols; j++) {
       // Dilation: if the pixel is white, mark all black pixels around it as GRAY,
       // and at the end shift the GRAY pixels to WHITE
-      dilation.at<uchar>(i, j) = dilateRegion(img, i, j);
+      dilation.at<uchar>(i, j) = dilateRegion(img, i, j, shape);
     }
   }
   return dilation;
 }
 
-uchar erodeRegion(const cv::Mat& img, int i, int j) {
+uchar erodeRegion(const cv::Mat& img, int i, int j, const std::vector<cv::Point2i>& region) {
   // Plus symbol
-  auto region = REGION_PLUS;
   uchar min = 255;
   for (auto it = region.begin(); it != region.end(); it++) {
     int checkRow = i + it->y,
@@ -126,22 +125,34 @@ uchar erodeRegion(const cv::Mat& img, int i, int j) {
   return min;
 }
 
-cv::Mat imErode(const cv::Mat& img) {
+cv::Mat imErode(const cv::Mat& img, const std::vector<cv::Point2i>& shape) {
   cv::Mat erosion(img.size(), CV_8U);
   for (int i = 0; i < img.rows; i++) {
     for (int j = 0; j < img.cols; j++) {
       // Erosion: if the pixel is WHITE, search in the area of the shape. If a single BLACK pixel is detected,
       // make the center GRAY. At the end, sweep through and make the GRAY pixels BLACK
-      erosion.at<uchar>(i, j) = erodeRegion(img, i, j);
+      erosion.at<uchar>(i, j) = erodeRegion(img, i, j, shape);
     }
   }
   return erosion;
 }
 
-cv::Mat imOpen(const cv::Mat& img) {
-  return imDilate(imErode(img));
+cv::Mat imOpen(const cv::Mat& img, const std::vector<cv::Point2i>& shape) {
+  return imDilate(imErode(img, shape), shape);
 }
 
-cv::Mat imClose(const cv::Mat& img) {
-  return imErode(imDilate(img));
+cv::Mat imClose(const cv::Mat& img, const std::vector<cv::Point2i>& shape) {
+  return imErode(imDilate(img, shape), shape);
+}
+
+cv::Mat imFilterMask(const cv::Mat& img, const cv::Mat& mask) {
+  cv::Mat filteredImage(img);
+  for (int i = 0; i < img.rows; i++) {
+    for (int j = 0; j < img.cols; j++) {
+      if (mask.at<uchar>(i, j) == BLACK) {
+        filteredImage.at<uchar>(i, j) = BLACK;
+      }
+    }
+  }
+  return filteredImage;
 }

@@ -38,6 +38,7 @@ int main(int argc, char **argv) {
     int autoThresh;
     Mat chans[3];
     Mat transformed;
+    Mat mask;
     Mat votes = Mat::zeros(200, 200, CV_8U);
     while(loop) {
       imshow("Visual", modified_image);
@@ -133,10 +134,19 @@ int main(int argc, char **argv) {
         imGray(modified_image);
         break;
       case 'm':
-        modified_image = imDilate(modified_image);
+        modified_image = imDilate(modified_image, makeCross(2));
         break;
       case 'M':
-        modified_image = imErode(modified_image);
+        modified_image = imErode(modified_image, makeCross(2));
+        break;
+      case '.':
+        imGray(modified_image);
+        modified_image.copyTo(mask);
+        imOtsuBinary(mask);
+        mask = imOpen(mask, makeCross(1));
+        mask = imClose(mask, makeCross(1));
+        mask = imOpen(mask, makeSquare(3));
+        modified_image = imFilterMask(modified_image, mask);
         break;
       case 9: // Tab
         modified_image = votes;

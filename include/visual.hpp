@@ -42,9 +42,12 @@ cv::Mat hsiToGs(const cv::Mat&);
 
 int imOtsuBinary(cv::Mat&);
 void imGray(cv::Mat&);
-cv::Mat imDilate(const cv::Mat&);
-cv::Mat imErode(const cv::Mat&);
-cv::Mat imOpen(const cv::Mat&);
-cv::Mat imClose(const cv::Mat&);
+std::vector<cv::Point2i> makeCross(int);
+std::vector<cv::Point2i> makeSquare(int);
+cv::Mat imDilate(const cv::Mat&, const std::vector<cv::Point2i>&);
+cv::Mat imErode(const cv::Mat&, const std::vector<cv::Point2i>&);
+cv::Mat imOpen(const cv::Mat&, const std::vector<cv::Point2i>&);
+cv::Mat imClose(const cv::Mat&, const std::vector<cv::Point2i>&);
+cv::Mat imFilterMask(const cv::Mat&, const cv::Mat&);
 
 #endif
