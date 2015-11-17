@@ -30,9 +30,6 @@ s - Applies the Sobel operator, generating a gradient image
 l - Laplacian of Gaussian 7x7 with sigma = 1.4, generates an edge image
 
 L - Laplacian of Gaussian 11x11 with sigma = 5, generates an edge image
-
-## New Commands:
-
 h - Convert color image to HSI
 d - Perform forward DCT keeping 9 frequency components
 D - Perform forward DCT then backwards again, keeping 9 frequency components
@@ -42,6 +39,11 @@ x - Do an ROI detection for lines
 X - Do an ROI detection for circles; *note: takes ages*
 Tab - If a linear ROI detection was run, show the Hough transform votes
 
+## New Commands:
+
+m - Dilate image
+M - Erode image
+g - Turn RGB image to GS
+. - Run image segmentation using morphological ops
+
 ## Updates:
-- Did some housekeeping, since the source files are were getting a bit long
-- Moved the write up to doc/report.pdf
