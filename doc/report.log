@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.9.14)  13 NOV 2015 16:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.9.14)  17 NOV 2015 11:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -407,332 +407,159 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 41.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [1
+)
+</home/taylor/repos/visual/img/q2.png, id=16, 325.215pt x 337.26pt>
+File: /home/taylor/repos/visual/img/q2.png Graphic file (type png)
+
+<use /home/taylor/repos/visual/img/q2.png>
+Package pdftex.def Info: /home/taylor/repos/visual/img/q2.png used on input lin
+e 59.
+(pdftex.def)             Requested size: 325.2142pt x 337.25917pt.
+
+</home/taylor/repos/visual/img/q3.png, id=17, 254.9525pt x 274.02374pt>
+File: /home/taylor/repos/visual/img/q3.png Graphic file (type png)
+
+<use /home/taylor/repos/visual/img/q3.png>
+Package pdftex.def Info: /home/taylor/repos/visual/img/q3.png used on input lin
+e 61.
+(pdftex.def)             Requested size: 254.95186pt x 274.02307pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 58--62
+
+ []
+
+[1
 
 {/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-</home/taylor/repos/visual/img/dct1.png, id=47, 602.25pt x 372.39125pt>
-File: /home/taylor/repos/visual/img/dct1.png Graphic file (type png)
+</home/taylor/repos/visual/img/q4.png, id=31, 220.825pt x 168.63pt>
+File: /home/taylor/repos/visual/img/q4.png Graphic file (type png)
 
-<use /home/taylor/repos/visual/img/dct1.png>
-Package pdftex.def Info: /home/taylor/repos/visual/img/dct1.png used on input l
-ine 110.
-(pdftex.def)             Requested size: 421.57211pt x 260.67209pt.
+<use /home/taylor/repos/visual/img/q4.png>
+Package pdftex.def Info: /home/taylor/repos/visual/img/q4.png used on input lin
+e 66.
+(pdftex.def)             Requested size: 220.82445pt x 168.62958pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 109--111
-
- []
-
-./report.tex:130: Missing $ inserted.
-<inserted text> 
-                $
-l.130 
-      
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-./report.tex:130: Missing } inserted.
-<inserted text> 
-                }
-l.130 
-      
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-./report.tex:130: Missing \cr inserted.
-<inserted text> 
-                \cr 
-l.130 
-      
-I'm guessing that you meant to end an alignment here.
-
-./report.tex:130: Missing $ inserted.
-<inserted text> 
-                $
-l.130 
-      
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-./report.tex:131: Misplaced \crcr.
-\endsmallmatrix ->\crcr 
-                        \egroup \egroup \,
-l.131 \end{smallmatrix}
-                       
-I can't figure out why you would want to use a tab mark
-or \cr or \span just now. If something like a right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
-
-./report.tex:131: Extra }, or forgotten \endgroup.
-\endsmallmatrix ->\crcr \egroup \egroup 
-                                        \,
-l.131 \end{smallmatrix}
-                       
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-</home/taylor/repos/visual/img/dct2.png, id=49, 602.25pt x 372.39125pt>
-File: /home/taylor/repos/visual/img/dct2.png Graphic file (type png)
-
-<use /home/taylor/repos/visual/img/dct2.png>
-Package pdftex.def Info: /home/taylor/repos/visual/img/dct2.png used on input l
-ine 133.
-(pdftex.def)             Requested size: 421.57211pt x 260.67209pt.
- [2 </home/taylor/repos/visual/img/dct1.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 152--155
+Underfull \hbox (badness 10000) in paragraph at lines 65--67
 
  []
 
-</home/taylor/repos/visual/img/baselhsi.png, id=62, 761.84625pt x 572.1375pt>
-File: /home/taylor/repos/visual/img/baselhsi.png Graphic file (type png)
-
-<use /home/taylor/repos/visual/img/baselhsi.png>
-Package pdftex.def Info: /home/taylor/repos/visual/img/baselhsi.png used on inp
-ut line 156.
-(pdftex.def)             Requested size: 380.9222pt x 286.06804pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 156--157
-
- []
-
-[3 </home/taylor/repos/visual/img/dct2.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 158--160
+[2 </home/taylor/repos/visual/img/q2.png> </home/taylor/repos/visual/img/q3.png
+>]
+Underfull \hbox (badness 10000) in paragraph at lines 68--69
 
  []
 
 
-</home/taylor/repos/visual/img/baseldct3.png, id=68, 761.84625pt x 572.1375pt>
-File: /home/taylor/repos/visual/img/baseldct3.png Graphic file (type png)
-
-<use /home/taylor/repos/visual/img/baseldct3.png>
-Package pdftex.def Info: /home/taylor/repos/visual/img/baseldct3.png used on in
-put line 161.
-(pdftex.def)             Requested size: 380.9222pt x 286.06804pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 161--162
+Underfull \hbox (badness 10000) in paragraph at lines 74--78
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 163--169
+</home/taylor/repos/visual/img/binarypigs.png, id=36, 323.2075pt x 311.1625pt>
+File: /home/taylor/repos/visual/img/binarypigs.png Graphic file (type png)
+
+<use /home/taylor/repos/visual/img/binarypigs.png>
+Package pdftex.def Info: /home/taylor/repos/visual/img/binarypigs.png used on i
+nput line 79.
+(pdftex.def)             Requested size: 323.20671pt x 311.16174pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 79--80
 
  []
 
-[4 </home/taylor/repos/visual/img/baselhsi.png> </home/taylor/repos/visual/img/
-baseldct3.png>]
-</home/taylor/repos/visual/img/baselidct3.png, id=73, 761.84625pt x 572.1375pt>
-File: /home/taylor/repos/visual/img/baselidct3.png Graphic file (type png)
-<use /home/taylor/repos/visual/img/baselidct3.png>
-Package pdftex.def Info: /home/taylor/repos/visual/img/baselidct3.png used on i
-nput line 170.
-(pdftex.def)             Requested size: 380.9222pt x 286.06804pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 170--171
+[3 </home/taylor/repos/visual/img/q4.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 81--84
 
  []
 
+</home/taylor/repos/visual/img/cross1.png, id=42, 109.40875pt x 110.4125pt>
+File: /home/taylor/repos/visual/img/cross1.png Graphic file (type png)
 
-Underfull \hbox (badness 10000) in paragraph at lines 172--180
+<use /home/taylor/repos/visual/img/cross1.png>
+Package pdftex.def Info: /home/taylor/repos/visual/img/cross1.png used on input
+ line 85.
+(pdftex.def)             Requested size: 109.40846pt x 110.41222pt.
 
- []
+</home/taylor/repos/visual/img/cross3.png, id=43, 253.94875pt x 254.9525pt>
+File: /home/taylor/repos/visual/img/cross3.png Graphic file (type png)
 
+<use /home/taylor/repos/visual/img/cross3.png>
+Package pdftex.def Info: /home/taylor/repos/visual/img/cross3.png used on input
+ line 86.
+(pdftex.def)             Requested size: 253.94812pt x 254.95186pt.
 
-</home/taylor/repos/visual/img/baseldct1.png, id=74, 761.84625pt x 572.1375pt>
-File: /home/taylor/repos/visual/img/baseldct1.png Graphic file (type png)
-
-<use /home/taylor/repos/visual/img/baseldct1.png>
-Package pdftex.def Info: /home/taylor/repos/visual/img/baseldct1.png used on in
-put line 181.
-(pdftex.def)             Requested size: 380.9222pt x 286.06804pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 181--182
-
- []
-
-[5 </home/taylor/repos/visual/img/baselidct3.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 183--184
+Underfull \hbox (badness 10000) in paragraph at lines 85--87
 
  []
 
-
-</home/taylor/repos/visual/img/baselidct1.png, id=79, 761.84625pt x 572.1375pt>
-File: /home/taylor/repos/visual/img/baselidct1.png Graphic file (type png)
-<use /home/taylor/repos/visual/img/baselidct1.png>
-Package pdftex.def Info: /home/taylor/repos/visual/img/baselidct1.png used on i
-nput line 185.
-(pdftex.def)             Requested size: 380.9222pt x 286.06804pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 185--186
+[4 </home/taylor/repos/visual/img/binarypigs.png> </home/taylor/repos/visual/im
+g/cross1.png> </home/taylor/repos/visual/img/cross3.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 88--90
 
  []
 
+</home/taylor/repos/visual/img/square1.png, id=48, 182.6825pt x 181.67876pt>
+File: /home/taylor/repos/visual/img/square1.png Graphic file (type png)
 
-Underfull \hbox (badness 10000) in paragraph at lines 187--189
+<use /home/taylor/repos/visual/img/square1.png>
+Package pdftex.def Info: /home/taylor/repos/visual/img/square1.png used on inpu
+t line 91.
+(pdftex.def)             Requested size: 182.68204pt x 181.6783pt.
 
- []
-
-[6 </home/taylor/repos/visual/img/baseldct1.png> </home/taylor/repos/visual/img
-/baselidct1.png>]
-</home/taylor/repos/visual/img/baselidct3gs.png, id=84, 761.84625pt x 572.1375p
-t>
-File: /home/taylor/repos/visual/img/baselidct3gs.png Graphic file (type png)
- <use /home/taylor/repos/visual/img/baselidct3gs.png>
-Package pdftex.def Info: /home/taylor/repos/visual/img/baselidct3gs.png used on
- input line 190.
-(pdftex.def)             Requested size: 380.9222pt x 286.06804pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 190--191
+Underfull \hbox (badness 10000) in paragraph at lines 91--92
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 192--193
+Underfull \hbox (badness 10000) in paragraph at lines 93--95
 
  []
 
 
-</home/taylor/repos/visual/img/baselidct1gs.png, id=85, 761.84625pt x 572.1375p
-t>
-File: /home/taylor/repos/visual/img/baselidct1gs.png Graphic file (type png)
- <use /home/taylor/repos/visual/img/baselidct1gs.png>
-Package pdftex.def Info: /home/taylor/repos/visual/img/baselidct1gs.png used on
- input line 194.
-(pdftex.def)             Requested size: 380.9222pt x 286.06804pt.
+</home/taylor/repos/visual/img/morphedpigs.png, id=49, 323.2075pt x 311.1625pt>
+File: /home/taylor/repos/visual/img/morphedpigs.png Graphic file (type png)
+<use /home/taylor/repos/visual/img/morphedpigs.png>
+Package pdftex.def Info: /home/taylor/repos/visual/img/morphedpigs.png used on 
+input line 96.
+(pdftex.def)             Requested size: 323.20671pt x 311.16174pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 194--195
-
- []
-
-[7 </home/taylor/repos/visual/img/baselidct3gs.png> </home/taylor/repos/visual/
-img/baselidct1gs.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 211--212
+Underfull \hbox (badness 10000) in paragraph at lines 96--97
 
  []
 
-
-</home/taylor/repos/visual/img/Building1.png, id=91, 681.54625pt x 466.74374pt>
-File: /home/taylor/repos/visual/img/Building1.png Graphic file (type png)
-<use /home/taylor/repos/visual/img/Building1.png>
-Package pdftex.def Info: /home/taylor/repos/visual/img/Building1.png used on in
-put line 213.
-(pdftex.def)             Requested size: 340.7723pt x 233.37129pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 213--214
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 215--222
-
- []
-
-
-</home/taylor/repos/visual/img/LinearHoughVotes.png, id=92, 828.09375pt x 160.6
-pt>
-./report.tex:223: Illegal unit of measure (pt inserted).
-<to be read again> 
-                   \relax 
-l.223 ...dth,trim=0 0 0 70,clip]{LinearHoughVotes}
-                                                  \\
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
-
-File: /home/taylor/repos/visual/img/LinearHoughVotes.png Graphic file (type png
-)
-<use /home/taylor/repos/visual/img/LinearHoughVotes.png>
-Package pdftex.def Info: /home/taylor/repos/visual/img/LinearHoughVotes.png use
-d on input line 223.
-(pdftex.def)             Requested size: 469.7692pt x 250.02461pt.
-
-Overfull \hbox (17.63899pt too wide) in paragraph at lines 223--224
-[][] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 223--224
-
- []
-
-[8 </home/taylor/repos/visual/img/Building1.png>]
-</home/taylor/repos/visual/img/Building1Hough.png, id=98, 683.55376pt x 537.006
-26pt>
-File: /home/taylor/repos/visual/img/Building1Hough.png Graphic file (type png)
- <use /home/taylor/repos/visual/img/Building1Hough.png>
-Package pdftex.def Info: /home/taylor/repos/visual/img/Building1Hough.png used 
-on input line 231.
-(pdftex.def)             Requested size: 341.77605pt x 268.50247pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 231--232
-
- []
-
-[9 </home/taylor/repos/visual/img/LinearHoughVotes.png> </home/taylor/repos/vis
-ual/img/Building1Hough.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 242--247
-
- []
-
-
-</home/taylor/repos/visual/img/DiskHough.png, id=104, 383.4325pt x 443.6575pt>
-File: /home/taylor/repos/visual/img/DiskHough.png Graphic file (type png)
-
-<use /home/taylor/repos/visual/img/DiskHough.png>
-Package pdftex.def Info: /home/taylor/repos/visual/img/DiskHough.png used on in
-put line 248.
-(pdftex.def)             Requested size: 383.43156pt x 443.6564pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 248--249
-
- []
-
-[10 </home/taylor/repos/visual/img/DiskHough.png>]
-Overfull \hbox (1.89868pt too wide) in paragraph at lines 272--273
-[]\OT1/cmr/m/n/12 Midpoint Cir-cle Al-go-rithm --- https://en.wikipedia.org/wik
-i/Midpoint[]circle[]algorithm 
- []
-
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 275.
-[11]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 275.
+[5 </home/taylor/repos/visual/img/square1.png> </home/taylor/repos/visual/img/m
+orphedpigs.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 104.
+ [6]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 104.
  (./report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 275.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 275.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 104.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 104.
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: 34BFEC299E7E89A22635C99205372EF4;395.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 275.
+(rerunfilecheck)             Checksum: 53DF201DF3BB055725C647FA10D1B971;134.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 104.
  ) 
 Here is how much of TeX's memory you used:
- 7014 strings out of 493091
- 101558 string characters out of 6134970
- 198548 words of memory out of 5000000
- 10382 multiletter control sequences out of 15000+600000
- 12403 words of font info for 48 fonts, out of 8000000 for 9000
+ 6963 strings out of 493091
+ 100117 string characters out of 6134970
+ 195548 words of memory out of 5000000
+ 10356 multiletter control sequences out of 15000+600000
+ 12096 words of font info for 47 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 30i,7n,35p,257b,483s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 30i,8n,35p,257b,408s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 ></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb>
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><
 /usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></u
 sr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr
 /local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/l
-ocal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/loca
-l/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local
-/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on report.pdf (11 pages, 3435652 bytes).
+ocal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/lo
+cal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/loca
+l/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on report.pdf (6 pages, 144475 bytes).
 PDF statistics:
- 157 PDF objects out of 1000 (max. 8388607)
- 117 compressed objects within 2 object streams
- 31 named destinations out of 1000 (max. 500000)
- 128 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 93 PDF objects out of 1000 (max. 8388607)
+ 67 compressed objects within 1 object stream
+ 11 named destinations out of 1000 (max. 500000)
+ 65 words of extra memory for PDF output out of 10000 (max. 10000000)
 

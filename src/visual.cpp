@@ -144,8 +144,10 @@ int main(int argc, char **argv) {
         modified_image.copyTo(mask);
         imOtsuBinary(mask);
         mask = imOpen(mask, makeCross(1));
+        mask = imOpen(mask, makeCross(3));
+        mask = imClose(mask, makeSquare(1));
+        // mask = imOpen(mask, makeCross(1));
         mask = imClose(mask, makeCross(1));
-        mask = imOpen(mask, makeSquare(3));
         modified_image = imFilterMask(modified_image, mask);
         break;
       case 9: // Tab
