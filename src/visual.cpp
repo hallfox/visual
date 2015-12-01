@@ -169,9 +169,17 @@ int main(int argc, char **argv) {
         imGray(modified_image);
         imNNAverage(modified_image, modified_image);
         break;
+      case '5':
+        imGray(modified_image);
+        imNNClassAverage(modified_image, modified_image);
+        break;
       case '6':
         imGray(modified_image);
         imManualTest(modified_image, modified_image);
+        break;
+      case '8':
+        imGray(modified_image);
+        imKMeans(modified_image, modified_image);
         break;
       default:
         break;

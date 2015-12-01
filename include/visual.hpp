@@ -57,5 +57,7 @@ void imManualTest(const cv::Mat&, cv::Mat&);
 void imNNTrain(const cv::Mat&, cv::Mat&);
 void imNNAverage(const cv::Mat&, cv::Mat&);
 void imNNCopy(const cv::Mat&, cv::Mat&);
+void imNNClassAverage(const cv::Mat& src, cv::Mat& dst);
+void imKMeans(const cv::Mat& src, cv::Mat& dst);
 
 #endif

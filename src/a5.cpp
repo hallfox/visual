@@ -185,3 +185,134 @@ void imNNAverage(const cv::Mat& src, cv::Mat& dst) {
   }
   dst = res;
 }
+
+void calcClassAvg(const cv::Mat & img, uchar *min, uchar *mid, uchar *max) {
+  long c1 = 0, c2 = 0, c3 = 0;
+  int count1 = 0, count2 = 0, count3 = 0;
+  for (int i = 0; i < img.rows/2; i+=4) {
+    for (int j = 0; j < img.cols; j+=4) {
+      uchar avg = maskAvg(img, j, i, 4);
+      if (0 <= avg && avg < 125) {
+        c1 += avg*16;
+        count1++;
+      }
+      else if (125 <= avg && avg < 175) {
+        c2 += avg*16;
+        count2++;
+      }
+      else {
+        c3 += avg*16;
+        count3++;
+      }
+    }
+  }
+  *min = static_cast<uchar>(c1 / (count1*16));
+  *mid = static_cast<uchar>(c2 / (count2*16));
+  *max = static_cast<uchar>(c3 / (count3*16));
+}
+
+void imNNClassAverage(const cv::Mat& src, cv::Mat& dst) {
+  cv::Mat res = src.clone();
+  uchar min, max, mid;
+  calcClassAvg(src, &min, &mid, &max);
+
+  int rows = src.rows, cols = src.cols;
+  for (int i = rows/2; i < rows; i+=4) {
+    for (int j = 0; j < cols; j+=4) {
+      cv::Point2i nearest = findNNEuclid(src, cv::Point2i(j, i));
+      uchar avg = maskAvg(src, nearest.x, nearest.y, 4);
+      if (0 <= avg && avg < 125) {
+        maskFill(res, j, i, 4, min);
+      }
+      else if (125 <= avg && avg < 175) {
+        maskFill(res, j, i, 4, mid);
+      }
+      else {
+        maskFill(res, j, i, 4, max);
+      }
+    }
+  }
+
+  dst = res;
+}
+
+std::vector<uchar> computeCenter(const cv::Mat& img, const std::vector<cv::Point2i>& group) {
+  std::vector<long> center(16, 0);
+  std::vector<uchar> res(16);
+  for (auto it = group.begin(); it != group.end(); it++) {
+    for (int x = 0; x < 4; x++) {
+      for (int y = 0; y < 4; y++) {
+        if (it->x+x < img.cols && it->y+y < img.rows) {
+          // std::cout << cv::Point2i(it->x+x, it->y+y) << "\n";
+          center[x+y*4] += img.at<uchar>(cv::Point2i(it->x+x, it->y+y));
+        }
+      }
+    }
+  }
+  for (int i = 0; i < center.size(); i++) {
+    res[i] = static_cast<uchar>(center[i] / group.size());
+  }
+  return res;
+}
+
+double euclidDistance(const cv::Mat& img, cv::Point2i p, const std::vector<uchar>& v, int w) {
+  double dist = 0;
+  for (int x = 0; x < w; x++) {
+    for (int y = 0; y < w; y++) {
+      cv::Point2i loc(p.x+x, p.y+y);
+      if (loc.x < img.cols && loc.y < img.rows) {
+        // std::cout << "Current loc: " << loc << std::endl;
+        dist += std::pow(img.at<uchar>(loc) - v[x+y*4], 2);
+      }
+    }
+  }
+  return std::sqrt(dist);
+}
+
+void imKMeans(const cv::Mat& src, cv::Mat& dst) {
+  cv::Mat res = src.clone();
+  std::vector<uchar> centers[3];
+  std::vector<cv::Point2i> groups[3] = {
+    {cv::Point2i(0, 0)},
+    {cv::Point2i(4, 0)},
+    {cv::Point2i(8, 0)},
+  };
+  for (int i = 0; i < 3; i++) {
+    centers[i] = computeCenter(src, groups[i]);
+    // std::cout << "Initial groups: " << groups[i] << "\n";
+  }
+  for (int i = 0; i < src.rows/2; i+=4) {
+    for (int j = 0; j < src.cols; j+=4) {
+      if (i == 0 && j <= 8) {
+        continue;
+      }
+
+      cv::Point2i loc(j, i);
+      // std::cout << loc << "\n";
+      double minDist = std::numeric_limits<double>::max();
+      int nearest = 0;
+      for (int k = 0; k < 3; k++) {
+        double dist = euclidDistance(src, loc, centers[k], 4);
+        if (dist < minDist) {
+          minDist = dist;
+          nearest = k;
+        }
+      }
+      groups[nearest].push_back(loc);
+      // std::cout << "Updated group " << nearest << " " << groups[nearest] << std::endl;
+      centers[nearest] = computeCenter(src, groups[nearest]);
+      switch(nearest) {
+      case 0:
+        maskFill(res, j, i, 4, 0);
+        break;
+      case 1:
+        maskFill(res, j, i, 4, 128);
+        break;
+      case 2:
+        maskFill(res, j, i, 4, 255);
+        break;
+      }
+    }
+  }
+  dst = res;
+}
