@@ -50,4 +50,12 @@ cv::Mat imOpen(const cv::Mat&, const std::vector<cv::Point2i>&);
 cv::Mat imClose(const cv::Mat&, const std::vector<cv::Point2i>&);
 cv::Mat imFilterMask(const cv::Mat&, const cv::Mat&);
 
+/****** ASSIGNMENT 5 FUNCTIONS ********/
+
+void imManualTrain(const cv::Mat&, cv::Mat&);
+void imManualTest(const cv::Mat&, cv::Mat&);
+void imNNTrain(const cv::Mat&, cv::Mat&);
+void imNNAverage(const cv::Mat&, cv::Mat&);
+void imNNCopy(const cv::Mat&, cv::Mat&);
+
 #endif

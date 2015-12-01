@@ -153,6 +153,26 @@ int main(int argc, char **argv) {
       case 9: // Tab
         modified_image = votes;
         break;
+      case '1':
+        imGray(modified_image);
+        imManualTrain(modified_image, modified_image);
+        break;
+      case '2':
+        imGray(modified_image);
+        imNNTrain(modified_image, modified_image);
+        break;
+      case '3':
+        imGray(modified_image);
+        imNNCopy(modified_image, modified_image);
+        break;
+      case '4':
+        imGray(modified_image);
+        imNNAverage(modified_image, modified_image);
+        break;
+      case '6':
+        imGray(modified_image);
+        imManualTest(modified_image, modified_image);
+        break;
       default:
         break;
         }
