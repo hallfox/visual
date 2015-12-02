@@ -38,12 +38,23 @@ E - Perform forward DCT then backwards again, keeping 1 frequency component
 x - Do an ROI detection for lines
 X - Do an ROI detection for circles; *note: takes ages*
 Tab - If a linear ROI detection was run, show the Hough transform votes
-
-## New Commands:
-
 m - Dilate image
 M - Erode image
 g - Turn RGB image to GS
 . - Run image segmentation using morphological ops
+
+## New commands:
+1 - produces image M1
+2 - produces image N1
+3 - produces image N2
+4 - produces image N3
+5 - produces image N4
+6 - produces T1 and prints the error between N1 and T1
+7 - produces image K1
+8 - produces dumb difference between first two frames
+9 - produces dumb difference between second two frames
+[ - produces compensated difference between first two frames
+] - produces compensated difference between second two frames
+
 
 ## Updates:

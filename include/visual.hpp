@@ -60,5 +60,7 @@ void imNNAverage(const cv::Mat&, cv::Mat&);
 void imNNCopy(const cv::Mat&, cv::Mat&);
 void imNNClassAverage(const cv::Mat& src, cv::Mat& dst);
 void imKMeans(const cv::Mat& src, cv::Mat& dst);
+cv::Mat diffTest(std::string, std::string);
+cv::Mat compDiffTest(std::string, std::string);
 
 #endif

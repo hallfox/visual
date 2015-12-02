@@ -326,3 +326,65 @@ void imKMeans(const cv::Mat& src, cv::Mat& dst) {
   }
   dst = res;
 }
+
+/** Part 2 **/
+void imDiff(const cv::Mat& src1, const cv::Mat& src2, cv::Mat& dst) {
+  cv::Mat diff(src1.size(), CV_8U);
+  for (int i = 0; i < src1.rows; i++) {
+    for (int j = 0; j < src1.cols; j++) {
+      diff.at<uchar>(i, j) = std::abs(src1.at<uchar>(i, j) - src2.at<uchar>(i, j));
+    }
+  }
+  dst = diff;
+}
+
+cv::Mat diffTest(std::string file1, std::string file2) {
+  cv::Mat img1 = cv::imread(file1);
+  cv::Mat img2 = cv::imread(file2);
+  cv::Mat diff;
+  imGray(img1);
+  imGray(img2);
+  imDiff(img1, img2, diff);
+  return diff;
+}
+
+cv::Point2i nearestDiff(const cv::Mat& img1, const cv::Mat& img2, cv::Point2i p) {
+  cv::Point2i nearest(0, 0);
+  cv::Mat diff(img1.size(), CV_8U);
+  double minDist = std::numeric_limits<double>::max();
+  for (int i = 0; i < img2.rows; i+=8) {
+    for (int j = 0; j < img2.cols; j+=8) {
+      double dist = euclidDistance(img1, img2, p, cv::Point2i(j, i), 8);
+      if (dist < minDist) {
+        minDist = dist;
+        nearest = cv::Point2i(j, i);
+      }
+    }
+  }
+  return nearest;
+}
+
+void compDiff(const cv::Mat& img1, const cv::Mat& img2, cv::Mat& dst) {
+  cv::Mat diff(img1.size(), CV_8U);
+  for (int i = 0; i < img1.rows; i+=8) {
+    for (int j = 0; j < img1.cols; j+=8) {
+      cv::Point2i nearest = nearestDiff(img1, img2, cv::Point2i(j, i));
+      for (int x = 0; x < 8; x++) {
+        for (int y = 0; y < 8; y++) {
+          diff.at<uchar>(i+y, j+x) = std::abs(img1.at<uchar>(i+y, j+x) - img2.at<uchar>(nearest.y+y, nearest.x+x));
+        }
+      }
+    }
+  }
+  dst = diff;
+}
+
+cv::Mat compDiffTest(std::string file1, std::string file2) {
+  cv::Mat img1 = cv::imread(file1);
+  cv::Mat img2 = cv::imread(file2);
+  cv::Mat diff;
+  imGray(img1);
+  imGray(img2);
+  compDiff(img1, img2, diff);
+  return diff;
+}

@@ -186,7 +186,19 @@ int main(int argc, char **argv) {
         break;
       default:
         break;
-        }
+      case '8':
+        modified_image = diffTest("img/ping1.tif", "img/ping2.tif");
+        break;
+      case '9':
+        modified_image = diffTest("img/pong1.tif", "img/pong2.tif");
+        break;
+      case '[':
+        modified_image = compDiffTest("img/ping1.tif", "img/ping2.tif");
+        break;
+      case ']':
+        modified_image = compDiffTest("img/pong1.tif", "img/pong2.tif");
+        break;
+      }
     }
 
     // Cleanup
