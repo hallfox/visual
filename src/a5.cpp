@@ -46,6 +46,16 @@ cv::Point2i findNNEuclid(const cv::Mat& img, cv::Point2i p) {
   return nearest;
 }
 
+double imError(const cv::Mat& img1, const cv::Mat& img2) {
+  double err = 0;
+  for (int i = 0; i < img1.rows; i++) {
+    for (int j = 0; j < img2.rows; j++) {
+      err += std::pow(img1.at<uchar>(i, j) - img2.at<uchar>(i, j), 2);
+    }
+  }
+  return err / (img1.rows * img1.cols);
+}
+
 cv::Point2i findNN(const cv::Mat& avgs, uchar target) {
   cv::Point2i nearest(0, 0);
 

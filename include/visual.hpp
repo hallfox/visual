@@ -52,6 +52,7 @@ cv::Mat imFilterMask(const cv::Mat&, const cv::Mat&);
 
 /****** ASSIGNMENT 5 FUNCTIONS ********/
 
+double imError(const cv::Mat&, const cv::Mat&);
 void imManualTrain(const cv::Mat&, cv::Mat&);
 void imManualTest(const cv::Mat&, cv::Mat&);
 void imNNTrain(const cv::Mat&, cv::Mat&);

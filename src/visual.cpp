@@ -40,6 +40,7 @@ int main(int argc, char **argv) {
     Mat transformed;
     Mat mask;
     Mat votes = Mat::zeros(200, 200, CV_8U);
+    Mat trained;
     while(loop) {
       imshow("Visual", modified_image);
 
@@ -175,9 +176,11 @@ int main(int argc, char **argv) {
         break;
       case '6':
         imGray(modified_image);
+        imNNTrain(modified_image, trained);
         imManualTest(modified_image, modified_image);
+        std::cout << "Mean square error: " << imError(modified_image, trained) << std::endl;
         break;
-      case '8':
+      case '7':
         imGray(modified_image);
         imKMeans(modified_image, modified_image);
         break;
